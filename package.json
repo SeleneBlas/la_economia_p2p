@@ -1,0 +1,10 @@
+{
+    "name": "la_economia_p2p",
+    "version": "1.0.0",
+    "description": "Pagina oficial de la economiap2p",
+    "author": "Selene Blas",
+    "license": "MIT",
+    "dependencies": {
+        "nombre-dependencia": "versión"
+    }
+}
