@@ -1,0 +1,33 @@
+name: Create JSON File
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  create-json:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Create JSON file
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const fs = require('fs');
+
+            const jsonData = {
+              name: 'la_economia_p2p',
+              version: '1.0.0',
+              description: 'Pagina oficial de la economiap2p',
+              author: 'Selene Blas',
+              license: 'MIT',
+              dependencies: {
+                'nombre-dependencia': 'versión'
+              }
+            };
+
+            fs.writeFileSync('package.json', JSON.stringify(jsonData, null, 2));
