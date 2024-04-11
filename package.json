@@ -3,5 +3,13 @@
     "version": "1.0.0",
     "description": "Pagina oficial de la economiap2p",
     "author": "Selene Blas",
-    "license": "MIT"
+    "license": "MIT",
+    "devDependencies": {
+        "gulp": "^5.0.0",
+        "webpack": "^5.91.0",
+        "webpack-cli": "^5.1.4"
+    },
+    "scripts": {
+        "build": "webpack --mode production"
+    }
 }
