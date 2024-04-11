@@ -87,5 +87,4 @@ function changePage(direction) {
   podcastSection.scrollIntoView({ behavior: 'smooth' });
 }
   podcastSection.scrollIntoView({ behavior: 'smooth' });
-}
 
