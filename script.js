@@ -1,7 +1,12 @@
 let currentPage = 1;
 const pageSize = 6;
 
-function getToken(clientId, clientSecret) {
+function getToken(clientId) {
+  const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
+  if (!clientSecret) {
+    throw new Error('Missing Spotify client secret.');
+  }
+
   return fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
     headers: {
@@ -17,6 +22,22 @@ function getToken(clientId, clientSecret) {
       throw new Error('Failed to fetch access token');
     });
 }
+
+function getEpisodes(showId, accessToken, offset, limit) {
+  return fetch(`https://api.spotify.com/v1/shows/${showId}/episodes?offset=${offset}&limit=${limit}`, {
+    headers: {
+      'Authorization': 'Bearer ' + accessToken,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => response.json())
+    .then(data => data.items)
+    .catch(error => {
+      console.error('Error fetching episodes:', error);
+      throw new Error('Failed to fetch episodes');
+    });
+}
+
 
 function getEpisodes(showId, accessToken, offset, limit) {
   return fetch(`https://api.spotify.com/v1/shows/${showId}/episodes?offset=${offset}&limit=${limit}`, {
