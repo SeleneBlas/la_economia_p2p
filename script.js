@@ -86,4 +86,6 @@ function changePage(direction) {
   const podcastSection = document.getElementById('podcast');
   podcastSection.scrollIntoView({ behavior: 'smooth' });
 }
+  podcastSection.scrollIntoView({ behavior: 'smooth' });
+}
 
