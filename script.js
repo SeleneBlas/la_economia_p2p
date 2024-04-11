@@ -62,7 +62,7 @@ function renderEpisodes(episodes) {
 
 function loadEpisodes(page, pageSize) {
   const clientId = '74ead41a626a4f8db39bd1800ef9eab8';
-  const clientSecret = process.env.CLIENT_SECRET;
+  const clientSecret = window.CLIENT_SECRET; // Accediendo a la variable de entorno CLIENT_SECRET
   const showId = '52ObViuLBc272ViaQ7HsZw';
   const offset = (page - 1) * pageSize;
 
@@ -86,3 +86,4 @@ function changePage(direction) {
   const podcastSection = document.getElementById('podcast');
   podcastSection.scrollIntoView({ behavior: 'smooth' });
 }
+
