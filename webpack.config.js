@@ -1,5 +1,5 @@
 const path = require('path');
-const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: './script.js',
@@ -8,6 +8,9 @@ module.exports = {
         filename: 'bundle.js'
     },
     plugins: [
-        new webpack.EnvironmentPlugin(['CLIENT_SECRET'])
+        new HtmlWebpackPlugin({
+            template: './index.html', // Ruta al archivo HTML de origen
+            filename: 'index.html'    // Nombre del archivo HTML generado
+        })
     ]
 };
