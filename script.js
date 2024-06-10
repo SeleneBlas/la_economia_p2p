@@ -1,23 +1,6 @@
 let currentPage = 1;
 const pageSize = 6;
 
-function getToken(clientId, clientSecret) {
-  return fetch('https://accounts.spotify.com/api/token', {
-    method: 'POST',
-    headers: {
-      'Authorization': 'Basic ' + btoa(clientId + ":" + clientSecret),
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: 'grant_type=client_credentials'
-  })
-    .then(response => response.json())
-    .then(data => data.access_token)
-    .catch(error => {
-      console.error('Error fetching access token:', error);
-      throw new Error('Failed to fetch access token');
-    });
-}
-
 function getEpisodes(showId, accessToken, offset, limit) {
   return fetch(`https://api.spotify.com/v1/shows/${showId}/episodes?offset=${offset}&limit=${limit}`, {
     headers: {
@@ -61,19 +44,22 @@ function renderEpisodes(episodes) {
 }
 
 function loadEpisodes(page, pageSize) {
-  const clientId = '74ead41a626a4f8db39bd1800ef9eab8';
-  const clientSecret = process.env.CLIENT_SECRET;
   const showId = '52ObViuLBc272ViaQ7HsZw';
   const offset = (page - 1) * pageSize;
 
-  getToken(clientId, clientSecret)
-    .then(accessToken => getEpisodes(showId, accessToken, offset, pageSize))
+  fetch('access_token.json')
+    .then(response => response.json())
+    .then(data => {
+      const accessToken = data.access_token;
+      return getEpisodes(showId, accessToken, offset, pageSize);
+    })
     .then(episodes => renderEpisodes(episodes))
     .catch(error => console.error(error));
 }
 
-
-loadEpisodes(currentPage, pageSize);
+document.addEventListener('DOMContentLoaded', () => {
+  loadEpisodes(currentPage, pageSize);
+});
 
 function changePage(direction) {
   currentPage += direction;
