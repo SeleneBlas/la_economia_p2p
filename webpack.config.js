@@ -1,28 +1,40 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    entry: './scripts.js',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js',
-    },
-    mode: 'production',
-    module: {
-        rules: [
-            {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader'],
-            },
+  entry: './scripts.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+        },
+      },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: 'html-loader',
+            options: { minimize: true },
+          },
         ],
-    },
-    plugins: [
+      },
+    ],
+  },
+  plugins: [
     new HtmlWebpackPlugin({
       template: './index.html',
       filename: './index.html',
     }),
     new webpack.DefinePlugin({
-      'process.env.SPOTIFY_ACCESS_TOKEN': JSON.stringify(process.env.CLIENT_SECRET),
+      'process.env.CLIENT_SECRET': JSON.stringify(process.env.CLIENT_SECRET),
     }),
   ],
 };
