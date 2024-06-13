@@ -8,7 +8,12 @@ function getEpisodes(showId, accessToken, offset, limit) {
       'Content-Type': 'application/json'
     }
   })
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+      return response.json();
+    })
     .then(data => data.items)
     .catch(error => {
       console.error('Error fetching episodes:', error);
@@ -27,18 +32,18 @@ function renderEpisodes(episodes) {
     const podcastElement = document.createElement('div');
     podcastElement.classList.add('column');
     podcastElement.innerHTML = `
-          <div class="podcast-details">
-              <a href="${URL}" target="_blank">
-                <img class="imagen-podcast" src="${imageUrl}" alt="Podcast Image" style="max-width: 100px; max-height: 100px;">
-              </a>
-              <div class="title-description">
-                <a href="${URL}" target="_blank">
-                  <h3 class="title">${name}</h3>
-                </a>
-                <p class="description-custom">${description}</p>
-              </div>
+      <div class="podcast-details">
+          <a href="${URL}" target="_blank">
+            <img class="imagen-podcast" src="${imageUrl}" alt="Podcast Image" style="max-width: 100px; max-height: 100px;">
+          </a>
+          <div class="title-description">
+            <a href="${URL}" target="_blank">
+              <h3 class="title">${name}</h3>
+            </a>
+            <p class="description-custom">${description}</p>
           </div>
-      `;
+      </div>
+    `;
     podcastsContainer.appendChild(podcastElement);
   });
 }
@@ -47,12 +52,14 @@ function loadEpisodes(page, pageSize) {
   const showId = '52ObViuLBc272ViaQ7HsZw';
   const offset = (page - 1) * pageSize;
 
-  fetch('access_token.json')
-    .then(response => response.json())
-    .then(data => {
-      const accessToken = data.access_token;
-      return getEpisodes(showId, accessToken, offset, pageSize);
-    })
+  const accessToken = process.env.SPOTIFY_ACCESS_TOKEN;
+
+  if (!accessToken) {
+    console.error('Access token is missing');
+    return;
+  }
+
+  getEpisodes(showId, accessToken, offset, pageSize)
     .then(episodes => renderEpisodes(episodes))
     .catch(error => console.error(error));
 }
