@@ -22,7 +22,7 @@ module.exports = {
       filename: './index.html',
     }),
     new webpack.DefinePlugin({
-      'process.env.SPOTIFY_ACCESS_TOKEN': JSON.stringify(process.env.SPOTIFY_ACCESS_TOKEN),
+      'process.env.SPOTIFY_ACCESS_TOKEN': JSON.stringify(process.env.CLIENT_SECRET),
     }),
   ],
 };
