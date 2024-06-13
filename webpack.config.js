@@ -17,8 +17,12 @@ module.exports = {
         ],
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: './index.html',
-        }),
-    ],
+    new HtmlWebpackPlugin({
+      template: './index.html',
+      filename: './index.html',
+    }),
+    new webpack.DefinePlugin({
+      'process.env.SPOTIFY_ACCESS_TOKEN': JSON.stringify(process.env.SPOTIFY_ACCESS_TOKEN),
+    }),
+  ],
 };
