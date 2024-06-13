@@ -52,7 +52,7 @@ function loadEpisodes(page, pageSize) {
   const showId = '52ObViuLBc272ViaQ7HsZw';
   const offset = (page - 1) * pageSize;
 
-  const accessToken = process.env.SPOTIFY_ACCESS_TOKEN;
+  const accessToken = process.env.CLIENT_SECRET;
 
   if (!accessToken) {
     console.error('Access token is missing');
