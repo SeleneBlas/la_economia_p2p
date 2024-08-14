@@ -12,11 +12,29 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up environment variables
-        run: echo "CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> $GITHUB_ENV
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'  # o la versión de Python que estés usando
+
+      - name: Install dependencies
+        run: |
+          rm -rf venv
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Build and deploy
         run: |
-          npm install
-          npm run build
-          npm run deploy
+          # Aquí puedes incluir los comandos para construir y desplegar tu aplicación
+          # Por ejemplo, si estás usando Flask o Django, puedes ejecutar los comandos correspondientes
+          # python manage.py collectstatic --noinput
+          # python manage.py migrate
+          # gunicorn myapp.wsgi:application
+
+      - name: Upload Production Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: production-build
+          path: path/to/build  # Ajusta la ruta según tu configuración
