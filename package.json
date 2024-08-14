@@ -5,10 +5,11 @@
     "author": "Selene Blas",
     "license": "MIT",
     "devDependencies": {
-        "gulp": "^5.0.0",
-        "webpack": "^5.91.0",
-        "webpack-cli": "^5.1.4",
-        "html-webpack-plugin": "^5.5.0"
+        "babel-loader": "^8.2.2",
+          "html-loader": "^2.1.2",
+          "html-webpack-plugin": "^5.5.0",
+          "webpack": "^5.91.0",
+          "webpack-cli": "^5.0.1"
     },
     "scripts": {
         "build": "webpack --mode production"
