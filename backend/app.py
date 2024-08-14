@@ -3,30 +3,20 @@ import requests
 
 app = Flask(__name__)
 
-@app.route('/api/episodes')
+@app.route('/api/episodes', methods=['GET'])
 def get_episodes():
-    page = int(request.args.get('page', 1))
-    page_size = int(request.args.get('size', 6))
-    access_token = 'YOUR_SPOTIFY_ACCESS_TOKEN'  # Cambia esto por tu token de acceso
+    show_id = request.args.get('show_id')
+    offset = request.args.get('offset', 0)
+    limit = request.args.get('limit', 6)
 
     headers = {
-        'Authorization': f'Bearer {access_token}'
+        'Authorization': f'Bearer {CLIENT_SECRET}',
+        'Content-Type': 'application/json'
     }
+    response = requests.get(f'https://api.spotify.com/v1/shows/{show_id}/episodes?offset={offset}&limit={limit}', headers=headers)
+    data = response.json()
 
-    # URL para obtener episodios (ajusta la URL según tu necesidad)
-    url = f'https://api.spotify.com/v1/shows/YOUR_SHOW_ID/episodes'
-    
-    try:
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()
-        data = response.json()
-        episodes = data.get('items', [])
-        start = (page - 1) * page_size
-        end = start + page_size
-        paginated_episodes = episodes[start:end]
-        return jsonify({'episodes': paginated_episodes})
-    except requests.RequestException as e:
-        return jsonify({'error': str(e)}), 500
+    return jsonify(data['items'])
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
